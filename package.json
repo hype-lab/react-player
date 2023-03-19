@@ -1,10 +1,19 @@
 {
-  "name": "@hypelab/react-player",
+  "name": "@hype-lab/react-player",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hype-lab/react-player"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
   "version": "0.0.1",
   "description": "custom react html5 video player",
-  "main": "index.js",
   "author": "matt p",
   "license": "MIT",
+  "scripts": {
+    "rollup": "rollup -c"
+  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^24.0.1",
     "@rollup/plugin-node-resolve": "^15.0.1",
@@ -21,5 +30,12 @@
   },
   "peerDependencies": {
     "react": "^18.2.0"
-  }
+  },
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "files": [
+    "dist"
+  ],
+  "types": "dist/index.d.ts",
+  "dependencies": {}
 }

@@ -7,7 +7,7 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "custom react html5 video player",
   "author": "matt p",
   "license": "MIT",

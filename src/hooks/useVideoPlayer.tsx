@@ -20,6 +20,14 @@ const useVideoPlayer = () => {
     }
   }
 
+  const videoWrapperElement = useRef<HTMLDivElement | null>(null);
+
+  const videoWrapperCallBackRef: React.RefCallback<HTMLDivElement> = (element: HTMLDivElement | null) => {
+    if (element && videoWrapperElement && videoWrapperElement.current != element) {
+      videoWrapperElement.current = element;
+    }
+  }
+
   useEffect(() => {
     if (videoElement.current) {
       console.log('executed because playerState.isPlaying changed.');
@@ -38,17 +46,34 @@ const useVideoPlayer = () => {
   };
 
   const handleFullScreen = () => {
-    if (videoElement.current) {
-      const isNowFullScreen = !playerState.fullScreen;
+    if (videoElement.current && videoWrapperElement.current) {
       setPlayerState({
         ...playerState,
         fullScreen: !playerState.fullScreen,
       });
 
-      if (isNowFullScreen) {
-        videoElement.current.requestFullscreen({ navigationUI: "hide" });
+      // PERCHE' PER METTERE FULLSCREEN SI LAVORA SULL'ELEMENTO MENTRE INVECE PER TOGLIERLO SI LAVORA SU DOCUMENT?!?!?!
+      // PERCHE' CAZZO PERCHEEEEEE'''
+      if (!playerState.fullScreen) {
+        if (videoWrapperElement.current.requestFullscreen) {
+          videoWrapperElement.current.requestFullscreen();
+        } else if (videoWrapperElement.current.mozRequestFullScreen) { /* Firefox */
+          videoWrapperElement.current.mozRequestFullScreen();
+        } else if (videoWrapperElement.current.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+          videoWrapperElement.current.webkitRequestFullscreen();
+        } else if (videoWrapperElement.current.msRequestFullscreen) { /* IE/Edge */
+          videoWrapperElement.current.msRequestFullscreen();
+        }
       } else {
-        videoElement.current.requestFullscreen({ navigationUI: "show" });
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) { /* Firefox */
+          document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE/Edge */
+          document.msExitFullscreen();
+        }
       }
     }
   }
@@ -144,7 +169,8 @@ const useVideoPlayer = () => {
     handleVideoSpeed,
     toggleMute,
     handleVideoProgressClick,
-    ref: videoCallbackRef
+    ref: videoCallbackRef,
+    wrapperRef: videoWrapperCallBackRef
   };
 };
 

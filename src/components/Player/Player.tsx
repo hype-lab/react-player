@@ -25,12 +25,13 @@ const Player: FC<PlayerProps> = function Player({ ...props }: PlayerProps) {
     handleVolumeBar,
     handleVideoProgressClick,
     toggleMute,
-    ref
+    ref,
+    wrapperRef
   } = useVideoPlayer();
 
   return (
     <div id="hl_player">
-      <div className="video-wrapper">
+      <div ref={wrapperRef} className="video-wrapper">
         <video
           autoPlay={props.autoPlay}
           poster={props.poster}

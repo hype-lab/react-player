@@ -10,3 +10,19 @@ declare module '\*.svg' {
     const ReactComponent: React.FC<React.SVGProps<SVGSVGElement>>;
     export default ReactComponent;
 }
+
+declare interface Element extends Element {
+    mozRequestFullScreen(): void;
+    webkitRequestFullscreen(): void;
+    msRequestFullscreen(): void;
+    exitFullscreen(): void;
+    mozCancelFullScreen(): void;
+    webkitExitFullscreen(): void;
+    msExitFullscreen(): void;
+}
+
+declare interface Document extends Document {
+    mozCancelFullScreen(): void;
+    webkitExitFullscreen(): void;
+    msExitFullscreen(): void;
+}

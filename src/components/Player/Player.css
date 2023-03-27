@@ -65,6 +65,7 @@ svg {
     -moz-appearance: none;
     appearance: none;
     background-color: #ffffff;
+    cursor: pointer;
   }
 
   #hl_player #rng_progress::-webkit-slider-runnable-track {
@@ -82,9 +83,11 @@ svg {
     -moz-appearance: none;
     appearance: none;
     height: 10px;
-    cursor: ew-resize;
+    cursor: pointer;
     background: #434343;
     box-shadow: -550px 0 0 550px #000000;
+    border-left: 0.1px solid #6e6e6e;
+    border-right: 0.1px solid #6e6e6e;
   }
 
   #hl_player #rng_progress::-moz-range-thumb {
@@ -93,7 +96,7 @@ svg {
     -moz-appearance: none;
     appearance: none;
     height: 100%;
-    cursor: ew-resize;
+    cursor: pointer;
     background: #434343;
     box-shadow: -550px 0 0 550px #000000;
     border-radius: 0 !important;
@@ -107,6 +110,7 @@ svg {
     -moz-appearance: none;
     appearance: none;
     background-color: #ffffff;
+    cursor: pointer;
   }
 
   #hl_player #rng_volume::-webkit-slider-runnable-track {
@@ -124,9 +128,11 @@ svg {
     -moz-appearance: none;
     appearance: none;
     height: 10px;
-    cursor: ew-resize;
+    cursor: pointer;
     background: #434343;
     box-shadow: -150px 0 0 150px #000000;
+    border-left: 0.1px solid #6e6e6e;
+    border-right: 0.1px solid #6e6e6e;
   }
 
   #hl_player #rng_volume::-moz-range-thumb {
@@ -135,7 +141,7 @@ svg {
     -moz-appearance: none;
     appearance: none;
     height: 100%;
-    cursor: ew-resize;
+    cursor: pointer;
     background: #434343;
     box-shadow: -150px 0 0 150px #000000;
     border-radius: 0 !important;
@@ -216,6 +222,14 @@ svg {
 }
 
 #hl_player .mute-btn {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  margin-top: 3%;
+}
+
+#hl_player .fullscreen-btn {
   background: none;
   border: none;
   outline: none;

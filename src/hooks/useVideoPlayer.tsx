@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, ChangeEvent, MouseEventHandler } from 'react';
+import { toHoursMinutesSeconds } from '../helpers/timeHelper';
 
 const useVideoPlayer = () => {
   const [playerState, setPlayerState] = useState({
@@ -9,6 +10,8 @@ const useVideoPlayer = () => {
     lastVolumeBeforeMute: 100,
     volume: 100,
     fullScreen: false,
+    currentTempo: '',
+    totalTempo: '',
   });
 
   const videoElement = useRef<HTMLVideoElement | null>(null);
@@ -93,9 +96,15 @@ const useVideoPlayer = () => {
   const handleOnTimeUpdate = () => {
     if (videoElement.current) {
       const progress = (videoElement.current.currentTime / videoElement.current.duration) * 100;
+      const currentTime = toHoursMinutesSeconds(videoElement.current.currentTime);
+      const currentTimeString = `${currentTime.h}:${currentTime.m}:${currentTime.s}`;
+      const duration = toHoursMinutesSeconds(videoElement.current.duration);
+      const durationString = `${duration.h}:${duration.m}:${duration.s}`;
       setPlayerState({
         ...playerState,
         progress,
+        currentTempo: currentTimeString,
+        totalTempo: durationString,
       });
     }
   };

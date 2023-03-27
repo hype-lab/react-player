@@ -3,10 +3,12 @@ import useVideoPlayer from '../../hooks/useVideoPlayer';
 
 import styles from './Player.css' assert { type: 'css' };
 
-import BtnPlay from './assets/btn_play.svg';
-import BtnPause from './assets/btn_pause.svg';
-import BtnMute from './assets/btn_mute.svg';
-import BtnUnmute from './assets/btn_unmute.svg';
+import PlayIcon from './assets/btn_play.svg';
+import PauseIcon from './assets/btn_pause.svg';
+import MuteIcon from './assets/btn_mute.svg';
+import UnmuteIcon from './assets/btn_unmute.svg';
+import FullscreenIcon from './assets/btn_fullscreen.svg';
+import MinscreenIcon from './assets/btn_minscreen.svg';
 
 document.adoptedStyleSheets = [styles];
 
@@ -33,7 +35,7 @@ const Player: FC<PlayerProps> = function Player({ ...props }: PlayerProps) {
     <div id="hl_player">
       <div ref={wrapperRef} className="video-wrapper">
         <video
-          autoPlay={props.autoPlay}
+          autoPlay={true}
           poster={props.poster}
           ref={ref}
           onTimeUpdate={handleOnTimeUpdate}
@@ -46,12 +48,12 @@ const Player: FC<PlayerProps> = function Player({ ...props }: PlayerProps) {
               <button className="play-btn" onClick={togglePlay}>
                 {!playerState.isPlaying ? (
                   <i>
-                    <BtnPlay width="0.5em" />
+                    <PlayIcon width="0.5em" />
                   </i>
                   // <i className="bx bx-play"></i>
                 ) : (
                   <i>
-                    <BtnPause width="0.5em" />
+                    <PauseIcon width="0.5em" />
                   </i>
                   // <i className="bx bx-pause"></i>
                 )}
@@ -65,6 +67,7 @@ const Player: FC<PlayerProps> = function Player({ ...props }: PlayerProps) {
                 onChange={(e: ChangeEvent<HTMLInputElement>) => handleVideoProgress(e)}
               />
             </div>
+            <span>{playerState.currentTempo} / {playerState.totalTempo}</span>
           </div>
           <select
             className="velocity"
@@ -78,14 +81,14 @@ const Player: FC<PlayerProps> = function Player({ ...props }: PlayerProps) {
           </select>
           <div className="mute_volume_box">
             <button className="mute-btn" onClick={toggleMute}>
-              {!playerState.isMuted ? (
+              {playerState.volume > 0 ? (
                 <i>
-                  <BtnUnmute />
+                  <UnmuteIcon />
                 </i>
                 // <i className="bx bxs-volume-full"></i>
               ) : (
                 <i>
-                  <BtnMute />
+                  <MuteIcon />
                 </i>
                 // <i className="bx bxs-volume-mute"></i>
               )}
@@ -95,20 +98,20 @@ const Player: FC<PlayerProps> = function Player({ ...props }: PlayerProps) {
               type='range'
               min="0"
               max="100"
-              step='10'
+              step='1'
               value={playerState.volume}
               onChange={(e: ChangeEvent<HTMLInputElement>) => handleVolumeBar(e)}
             />
           </div>
           <div className="fs_p2p_box">
-            <button onClick={handleFullScreen}>
+            <button className="fullscreen-btn" onClick={handleFullScreen}>
               {!playerState.fullScreen ? (
                 <i>
-                  fullscreen
+                  <FullscreenIcon />
                 </i>
               ) : (
                 <i>
-                  minscreen
+                  <MinscreenIcon />
                 </i>
               )}
             </button>

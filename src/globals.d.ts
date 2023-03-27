@@ -26,3 +26,9 @@ declare interface Document extends Document {
     webkitExitFullscreen(): void;
     msExitFullscreen(): void;
 }
+
+declare type HoursMinutesSeconds = {
+    h: number,
+    m: number,
+    s: number,
+}

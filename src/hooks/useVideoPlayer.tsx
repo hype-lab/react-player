@@ -6,6 +6,9 @@ const useVideoPlayer = () => {
     progress: 0,
     speed: 1,
     isMuted: false,
+    lastVolumeBeforeMute: 100,
+    volume: 100,
+    fullScreen: false,
   });
 
   const videoElement = useRef<HTMLVideoElement | null>(null);
@@ -33,6 +36,34 @@ const useVideoPlayer = () => {
       isPlaying: !playerState.isPlaying,
     });
   };
+
+  const handleFullScreen = () => {
+    if (videoElement.current) {
+      const isNowFullScreen = !playerState.fullScreen;
+      setPlayerState({
+        ...playerState,
+        fullScreen: !playerState.fullScreen,
+      });
+
+      if (isNowFullScreen) {
+        videoElement.current.requestFullscreen({ navigationUI: "hide" });
+      } else {
+        videoElement.current.requestFullscreen({ navigationUI: "show" });
+      }
+    }
+  }
+
+  const handleVolumeBar = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (videoElement.current) {
+      const valumValue = Number(e.target.value) / 100;
+      setPlayerState({
+        ...playerState,
+        volume: Number(e.target.value),
+        lastVolumeBeforeMute: Number(e.target.value),
+      });
+      videoElement.current.volume = Number(valumValue.toFixed(1));
+    }
+  }
 
   const handleOnTimeUpdate = () => {
     if (videoElement.current) {
@@ -79,9 +110,18 @@ const useVideoPlayer = () => {
   };
 
   const toggleMute = () => {
+    const isNowMuted = !playerState.isMuted;
+    let vol = playerState.volume;
+    if (isNowMuted) {
+      vol = 0
+    } else {
+      vol = playerState.lastVolumeBeforeMute;
+    }
+
     setPlayerState({
       ...playerState,
       isMuted: !playerState.isMuted,
+      volume: vol,
     });
   };
 
@@ -98,7 +138,9 @@ const useVideoPlayer = () => {
     playerState,
     togglePlay,
     handleOnTimeUpdate,
+    handleVolumeBar,
     handleVideoProgress,
+    handleFullScreen,
     handleVideoSpeed,
     toggleMute,
     handleVideoProgressClick,

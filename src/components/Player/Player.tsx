@@ -20,7 +20,9 @@ const Player: FC<PlayerProps> = function Player({ ...props }: PlayerProps) {
     togglePlay,
     handleOnTimeUpdate,
     handleVideoProgress,
+    handleFullScreen,
     handleVideoSpeed,
+    handleVolumeBar,
     handleVideoProgressClick,
     toggleMute,
     ref
@@ -39,27 +41,30 @@ const Player: FC<PlayerProps> = function Player({ ...props }: PlayerProps) {
         </video>
         <div className="controls">
           <div className="actions">
-            <button onClick={togglePlay}>
-              {!playerState.isPlaying ? (
-                <i>
-                  <BtnPlay />
-                </i>
-                // <i className="bx bx-play"></i>
-              ) : (
-                <i>
-                  <BtnPause />
-                </i>
-                // <i className="bx bx-pause"></i>
-              )}
-            </button>
+            <div className="play_progress_box">
+              <button className="play-btn" onClick={togglePlay}>
+                {!playerState.isPlaying ? (
+                  <i>
+                    <BtnPlay width="0.5em" />
+                  </i>
+                  // <i className="bx bx-play"></i>
+                ) : (
+                  <i>
+                    <BtnPause width="0.5em" />
+                  </i>
+                  // <i className="bx bx-pause"></i>
+                )}
+              </button>
+              <input
+                id="rng_progress"
+                type="range"
+                value={playerState.progress}
+                min="0"
+                max="100"
+                onChange={(e: ChangeEvent<HTMLInputElement>) => handleVideoProgress(e)}
+              />
+            </div>
           </div>
-          <input
-            type="range"
-            value={playerState.progress}
-            min="0"
-            max="100"
-            onChange={(e: ChangeEvent<HTMLInputElement>) => handleVideoProgress(e)}
-          />
           <select
             className="velocity"
             value={playerState.speed}
@@ -70,19 +75,44 @@ const Player: FC<PlayerProps> = function Player({ ...props }: PlayerProps) {
             <option value="1.25">1.25x</option>
             <option value="2">2x</option>
           </select>
-          <button className="mute-btn" onClick={toggleMute}>
-            {!playerState.isMuted ? (
-              <i>
-                <BtnUnmute />
-              </i>
-              // <i className="bx bxs-volume-full"></i>
-            ) : (
-              <i>
-                <BtnMute />
-              </i>
-              // <i className="bx bxs-volume-mute"></i>
-            )}
-          </button>
+          <div className="mute_volume_box">
+            <button className="mute-btn" onClick={toggleMute}>
+              {!playerState.isMuted ? (
+                <i>
+                  <BtnUnmute />
+                </i>
+                // <i className="bx bxs-volume-full"></i>
+              ) : (
+                <i>
+                  <BtnMute />
+                </i>
+                // <i className="bx bxs-volume-mute"></i>
+              )}
+            </button>
+            <input
+              id="rng_volume"
+              type='range'
+              min="0"
+              max="100"
+              step='10'
+              value={playerState.volume}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => handleVolumeBar(e)}
+            />
+          </div>
+          <div className="fs_p2p_box">
+            <button onClick={handleFullScreen}>
+              {!playerState.fullScreen ? (
+                <i>
+                  fullscreen
+                </i>
+              ) : (
+                <i>
+                  minscreen
+                </i>
+              )}
+            </button>
+          </div>
+          {/* <br /><br /> */}
         </div>
       </div>
     </div>

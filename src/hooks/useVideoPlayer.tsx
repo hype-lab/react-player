@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, ChangeEvent, MouseEventHandler } from 'react';
-import { toHoursMinutesSeconds } from '../helpers/timeHelper';
+import { toHoursMinutesSecondsString } from '../helpers/timeHelper';
 
 const useVideoPlayer = () => {
   const [playerState, setPlayerState] = useState({
@@ -10,15 +10,15 @@ const useVideoPlayer = () => {
     lastVolumeBeforeMute: 100,
     volume: 100,
     fullScreen: false,
-    currentTempo: '',
-    totalTempo: '',
+    currentTempo: '00:00',
+    totalTempo: '00:00',
   });
 
   const videoElement = useRef<HTMLVideoElement | null>(null);
 
   const videoCallbackRef: React.RefCallback<HTMLVideoElement> = (element: HTMLVideoElement | null) => {
-    if (element && videoElement && videoElement.current != element) {
-      console.log('executed because the HTML video element was set.');
+    if (element && videoElement && videoElement.current !== element) {
+
       videoElement.current = element;
     }
   }
@@ -26,14 +26,14 @@ const useVideoPlayer = () => {
   const videoWrapperElement = useRef<HTMLDivElement | null>(null);
 
   const videoWrapperCallBackRef: React.RefCallback<HTMLDivElement> = (element: HTMLDivElement | null) => {
-    if (element && videoWrapperElement && videoWrapperElement.current != element) {
+    if (element && videoWrapperElement && videoWrapperElement.current !== element) {
       videoWrapperElement.current = element;
     }
   }
 
   useEffect(() => {
     if (videoElement.current) {
-      console.log('executed because playerState.isPlaying changed.');
+
       playerState.isPlaying
         ? videoElement.current?.play()
         : videoElement.current?.pause();
@@ -96,26 +96,13 @@ const useVideoPlayer = () => {
   const handleOnTimeUpdate = () => {
     if (videoElement.current) {
       const progress = (videoElement.current.currentTime / videoElement.current.duration) * 100;
-      const currentTime = toHoursMinutesSeconds(videoElement.current.currentTime);
-      const currentTimeString = `${currentTime.h}:${currentTime.m}:${currentTime.s}`;
-      const duration = toHoursMinutesSeconds(videoElement.current.duration);
-      const durationString = `${duration.h}:${duration.m}:${duration.s}`;
+      const currentTime = toHoursMinutesSecondsString(videoElement.current.currentTime);
+      const duration = toHoursMinutesSecondsString(videoElement.current.duration);
       setPlayerState({
         ...playerState,
         progress,
-        currentTempo: currentTimeString,
-        totalTempo: durationString,
-      });
-    }
-  };
-
-  const handleVideoProgressClick = (event: MouseEventHandler<HTMLInputElement>) => {
-    const manualChange = Number();
-    if (videoElement.current) {
-      videoElement.current.currentTime = (videoElement.current.duration / 100) * manualChange;
-      setPlayerState({
-        ...playerState,
-        progress: manualChange,
+        currentTempo: currentTime.h !== '00' ? `${currentTime.h}:${currentTime.m}:${currentTime.s}` : `${currentTime.m}:${currentTime.s}`,
+        totalTempo: duration.h !== '00' ? `${duration.h}:${duration.m}:${duration.s}` : `${duration.m}:${duration.s}`,
       });
     }
   };
@@ -160,7 +147,6 @@ const useVideoPlayer = () => {
   };
 
   useEffect(() => {
-    console.log('executed because playerState.isMuted changed.');
     if (videoElement.current) {
       playerState.isMuted
         ? (videoElement.current.muted = true)
@@ -177,7 +163,6 @@ const useVideoPlayer = () => {
     handleFullScreen,
     handleVideoSpeed,
     toggleMute,
-    handleVideoProgressClick,
     ref: videoCallbackRef,
     wrapperRef: videoWrapperCallBackRef
   };

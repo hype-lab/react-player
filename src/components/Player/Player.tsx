@@ -25,7 +25,6 @@ const Player: FC<PlayerProps> = function Player({ ...props }: PlayerProps) {
     handleFullScreen,
     handleVideoSpeed,
     handleVolumeBar,
-    handleVideoProgressClick,
     toggleMute,
     ref,
     wrapperRef

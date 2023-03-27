@@ -12,23 +12,25 @@ declare module '\*.svg' {
 }
 
 declare interface Element extends Element {
-    mozRequestFullScreen(): void;
-    webkitRequestFullscreen(): void;
-    msRequestFullscreen(): void;
-    exitFullscreen(): void;
-    mozCancelFullScreen(): void;
-    webkitExitFullscreen(): void;
-    msExitFullscreen(): void;
+    mozRequestFullScreen(): Promise<void>;
+    webkitRequestFullscreen(): Promise<void>;
+    msRequestFullscreen(): Promise<void>;
 }
 
 declare interface Document extends Document {
-    mozCancelFullScreen(): void;
-    webkitExitFullscreen(): void;
-    msExitFullscreen(): void;
+    mozCancelFullScreen(): Promise<void>;
+    webkitExitFullscreen(): Promise<void>;
+    msExitFullscreen(): Promise<void>;
 }
 
 declare type HoursMinutesSeconds = {
     h: number,
     m: number,
     s: number,
+}
+
+declare type HoursMinutesSecondsStrings = {
+    h: string,
+    m: string,
+    s: string,
 }

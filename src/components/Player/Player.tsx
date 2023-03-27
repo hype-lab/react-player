@@ -3,9 +3,16 @@ import useVideoPlayer from '../../hooks/useVideoPlayer';
 
 import styles from './Player.css' assert { type: 'css' };
 
+import BtnPlay from './assets/btn_play.svg';
+import BtnPause from './assets/btn_pause.svg';
+import BtnMute from './assets/btn_mute.svg';
+import BtnUnmute from './assets/btn_unmute.svg';
+
 document.adoptedStyleSheets = [styles];
 
-const v = "https://file-examples.com/storage/fef1706276640fa2f99a5a4/2017/04/file_example_MP4_1280_10MG.mp4";
+const defaultProps: PlayerProps = {
+  autoPlay: true,
+};
 
 const Player: FC<PlayerProps> = function Player({ ...props }: PlayerProps) {
   const {
@@ -20,29 +27,37 @@ const Player: FC<PlayerProps> = function Player({ ...props }: PlayerProps) {
   } = useVideoPlayer();
 
   return (
-    <div className="container">
+    <div id="hl_player">
       <div className="video-wrapper">
         <video
+          autoPlay={props.autoPlay}
           poster={props.poster}
-          src={props.src}
           ref={ref}
           onTimeUpdate={handleOnTimeUpdate}
-        />
+        >
+          <source src={props.src} />
+        </video>
         <div className="controls">
           <div className="actions">
             <button onClick={togglePlay}>
               {!playerState.isPlaying ? (
-                <i className="bx bx-play"></i>
+                <i>
+                  <BtnPlay />
+                </i>
+                // <i className="bx bx-play"></i>
               ) : (
-                <i className="bx bx-pause"></i>
+                <i>
+                  <BtnPause />
+                </i>
+                // <i className="bx bx-pause"></i>
               )}
             </button>
           </div>
           <input
             type="range"
+            value={playerState.progress}
             min="0"
             max="100"
-            value={playerState.progress}
             onChange={(e: ChangeEvent<HTMLInputElement>) => handleVideoProgress(e)}
           />
           <select
@@ -57,9 +72,15 @@ const Player: FC<PlayerProps> = function Player({ ...props }: PlayerProps) {
           </select>
           <button className="mute-btn" onClick={toggleMute}>
             {!playerState.isMuted ? (
-              <i className="bx bxs-volume-full"></i>
+              <i>
+                <BtnUnmute />
+              </i>
+              // <i className="bx bxs-volume-full"></i>
             ) : (
-              <i className="bx bxs-volume-mute"></i>
+              <i>
+                <BtnMute />
+              </i>
+              // <i className="bx bxs-volume-mute"></i>
             )}
           </button>
         </div>
@@ -67,6 +88,8 @@ const Player: FC<PlayerProps> = function Player({ ...props }: PlayerProps) {
     </div>
   );
 };
+
+Player.defaultProps = defaultProps;
 
 export default Player;
 

@@ -11,9 +11,8 @@ const useVideoPlayer = () => {
   const videoElement = useRef<HTMLVideoElement | null>(null);
 
   const videoCallbackRef: React.RefCallback<HTMLVideoElement> = (element: HTMLVideoElement | null) => {
-    if (element) {
+    if (element && videoElement && videoElement.current != element) {
       console.log('executed because the HTML video element was set.');
-      /* do stuff that requires the element. */
       videoElement.current = element;
     }
   }
@@ -46,7 +45,6 @@ const useVideoPlayer = () => {
   };
 
   const handleVideoProgressClick = (event: MouseEventHandler<HTMLInputElement>) => {
-    const d = event.apply;
     const manualChange = Number();
     if (videoElement.current) {
       videoElement.current.currentTime = (videoElement.current.duration / 100) * manualChange;
